@@ -56,6 +56,56 @@ var Issue = function(init) {
 	return that;
 };
 
+//Class Person
+var Person = function(name) {
+	var that = {};
+	var name_ = name;
+	var issues_ = [];
+
+	that.name = function() {
+		return name_;
+	}
+
+	that.numOpen = function() {
+		var num = 0;
+		for (var i=0;i<issues_.length;i++) {
+			if (issues_[i].isOpen()) {
+				num++;
+			}
+		}
+		return num;
+	}
+
+	that.numClosed = function() {
+		var num = 0;
+		for (var i=0;i<issues_.length;i++) {
+			if (!issues_[i].isOpen()) {
+				num++;
+			}
+		}
+		return num;
+	}
+
+	that.numTotal = function() {
+		return issues_.length;
+	}
+
+	that.addIssue = function(issue) {
+		issues_.push(issue);
+	}
+
+	that.removeIssue = function(number) {
+		var found = false;
+		for (var i=0;i<issues_.length && found == false;i++) {
+			if (issues_[i].issueNumber() == number) {
+				found = true;
+				issues_.splice(i, i+1);
+			}
+		}
+	}
+	return that;
+};
+
 var drawBar = (function () {
 	topMargin = 10;
 	var incrementTopMargin = function () {
