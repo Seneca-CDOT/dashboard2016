@@ -1,9 +1,10 @@
 var currentIssue; // used for for the routines to parse the issues
 var issues = []; // Contains all the issues read from github
+var persons = []; // contains all the persons from github
 
 var gitHubData = (function () {
 	var httpRequest = new XMLHttpRequest();
-	var url = 'https://api.github.com/repos/Seneca-CDOT/dashboard2016/issues';
+	var url = 'https://api.github.com/repos/Seneca-CDOT/dashboard2016/issues?state=all';
 	var data;
 
 	httpRequest.onreadystatechange = function() {
@@ -133,7 +134,7 @@ var drawBar = (function () {
 }());
 
 // Parsing the issues and populating the array of issues
-for (i = 0; i < gitHubData.length; i++) {
+for (var i = 0; i < gitHubData.length; i++) {
 	currentIssue = gitHubData[i];
 	issues.push(Issue({
 		title: currentIssue.title,
@@ -143,4 +144,27 @@ for (i = 0; i < gitHubData.length; i++) {
 		date: currentIssue.created_at,
 		milestone: currentIssue.milestone
 	}));
+}
+
+function personExists(name) {
+	var i;
+	for (i = 0; i < persons.length; i++) {
+		if (persons[i].name() === name) { return i; }
+	}
+	return false;
+}
+
+// fetching the persons
+for (var i = 0; i < issues.length; i++) {
+	var currentIssue = issues[i];
+	var personIndex = personExists(currentIssue.assignee());
+
+	if (personIndex === false) {
+		var person = Person(currentIssue.assignee());
+		person.addIssue(currentIssue);
+		persons.push(person);
+	}
+	else {
+		persons[personIndex].addIssue(currentIssue);
+	}
 }
