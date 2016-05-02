@@ -56,6 +56,32 @@ var Issue = function(init) {
 	return that;
 };
 
+var drawBar = (function () {
+	topMargin = 10;
+	var incrementTopMargin = function () {
+		topMargin += 60;
+	};
+
+	return function (left, total, label) {
+		var leftMargin = 10;
+		var defaultWidth = 400;
+		var heightSpace = 20;
+		var filledWidth = (left / total) * defaultWidth;
+
+		fill(color(0, 0, 0));
+		textSize(20);
+		text(label, leftMargin, topMargin + 10);
+
+		fill(color(0, 150, 0));
+		rect(leftMargin, topMargin + heightSpace, 400, 20);
+
+		fill(color(200, 0, 0));
+		rect(leftMargin, topMargin + heightSpace, filledWidth, 20);
+
+		incrementTopMargin();
+	};
+}());
+
 // Parsing the issues and populating the array of issues
 for (i = 0; i < gitHubData.length; i++) {
 	currentIssue = gitHubData[i];
