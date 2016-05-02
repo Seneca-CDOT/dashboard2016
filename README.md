@@ -1,3 +1,3 @@
 # dashboard2016
 
-Cathy Leung
+Catherine Leung
